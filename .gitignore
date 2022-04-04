@@ -1,2 +1,3 @@
 /backend/venv/
 db_config.py
+.DS_Store
