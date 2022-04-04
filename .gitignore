@@ -1,4 +1,4 @@
 /backend/venv/
 db_config.py
 .DS_Store
-/frontend/venv/.DS_Store
+/backend/venv/.DS_Store
