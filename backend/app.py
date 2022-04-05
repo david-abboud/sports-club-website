@@ -1,15 +1,17 @@
 import datetime
 from flask_bcrypt import Bcrypt
 from flask import Flask, jsonify, request
-# from flask import request
-# from flask import jsonify
-# from flask import abort
+from flask import request
+from flask import jsonify
+from flask import abort
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-# from flask_marshmallow import Marshmallow
-# import jwt
+from flask_marshmallow import Marshmallow
+import jwt
 from db_config import DB_CONFIG
 from flask_marshmallow import Marshmallow
+
+SECRET_KEY = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
 
 app = Flask(__name__)
 
@@ -106,3 +108,36 @@ def create_user():
  db.session.commit()
  
  return jsonify(customers_schema.dump(customer))
+
+
+@app.route('/signin', methods=['POST'])
+def auth():
+ unm = request.json["user_name"]
+ pwd_unhashed = request.json["password"]
+
+ if (unm == "" or pwd_unhashed == ""):
+  abort(400)
+
+ query = db.session.query(Customers).filter_by(user_name=unm).first()
+
+ if (query == None):
+  abort(403)
+
+ if (bcrypt.check_password_hash(query.hashed_password, pwd_unhashed) == False):
+  abort(403)
+
+ tok = create_token(query.id)
+ return jsonify(token=tok)
+
+
+def create_token(user_id):
+ payload = {
+  'exp': datetime.datetime.utcnow() + datetime.timedelta(days=4),
+  'iat': datetime.datetime.utcnow(),
+  'sub': user_id
+ }
+ return jwt.encode(
+  payload,
+  SECRET_KEY,
+  algorithm='HS256'
+ )
