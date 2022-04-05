@@ -1,3 +1,4 @@
+from argparse import RawDescriptionHelpFormatter
 import datetime
 from flask_bcrypt import Bcrypt
 from flask import Flask, abort, jsonify, request
@@ -70,17 +71,22 @@ class Reservations(db.Model):
  id = db.Column(db.Integer, primary_key=True)
  date = db.Column(db.DateTime)
  type = db.Column(db.Boolean, nullable=False)
- user_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True) 
- field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
- event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+ user_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True) #user id null if event
+ field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=True)
+ event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=True)
 
  def __init__(self, type, field_id, event_id, user_id):
   super(Reservations, self).__init__(date=datetime.datetime.now(), type=type, field_id=field_id, event_id=event_id, user_id=user_id)
 
+class ReservationSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "date", "type", "user_id", "field_id", "event_id")
+        model = Reservations
+reservations_schema = ReservationSchema()
 
 class Fields(db.Model):
  id = db.Column(db.Integer, primary_key=True)
- type = db.Column(db.Boolean, nullable=False)
+ type = db.Column(db.String(30), nullable=False)
 
  def __init__(self, type):
   super(Fields, self).__init__(type=type)
@@ -141,3 +147,38 @@ def create_token(user_id):
         SECRET_KEY,
         algorithm='HS256'
 )
+def extract_auth_token(authenticated_request):
+    auth_header = authenticated_request.headers.get('Authorization')
+    if auth_header:
+      return auth_header.split(" ")[1]
+    else:
+      return None
+
+def decode_token(token):
+  payload = jwt.decode(token, SECRET_KEY, 'HS256')
+  return payload['sub']
+
+@app.route('/reservation', methods=['POST'])
+def create_reservation():
+  type = request.json["type"]
+  field_id = request.json["field_id"]
+  event_id = request.json["event_id"]
+
+  reservation = Reservations(type, field_id, event_id, None)
+  
+  token = extract_auth_token(request)
+  # def __init__(self, type, field_id, event_id, user_id):
+
+  if (token != None):
+    try:
+        userid = decode_token(token)
+    except jwt.ExpiredSignatureError as error:
+        abort(403)
+    except jwt.InvalidTokenError as error:
+        abort(403)
+    reservation.user_id = userid
+    
+  db.session.add(reservation)
+  db.session.commit()
+ 
+  return jsonify(reservations_schema.dump(reservation))
