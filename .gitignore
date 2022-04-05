@@ -2,3 +2,4 @@
 db_config.py
 .DS_Store
 /backend/venv/.DS_Store
+.idea/
