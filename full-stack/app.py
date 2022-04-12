@@ -158,6 +158,25 @@ def decode_token(token):
   payload = jwt.decode(token, SECRET_KEY, 'HS256')
   return payload['sub']
 
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    unm = request.json["user_name"]
+    old_pwd_unhashed = request.json["old_password"]
+    new_pwd1 = request.json["new_password1"]
+    new_pwd2 = request.json["new_password2"]
+
+    query = db.session.query(Customers).filter_by(user_name = unm).first()
+
+    if (new_pwd1 != new_pwd2):
+        abort(403)
+    if (bcrypt.check_password_hash(query.hashed_password, old_pwd_unhashed) == False):
+        abort(403)
+
+    query.hashed_password = bcrypt.generate_password_hash(new_pwd1)
+    db.session.commit()
+    return jsonify("Password has been changed")
+
+
 @app.route('/reservation', methods=['POST'])
 def create_reservation():
   type = request.json["type"]
