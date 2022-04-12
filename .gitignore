@@ -6,5 +6,5 @@ db_config.py
 .DS_Store
 /backend/app.pyc
 /backend/__pycache__/
-backend/db_config.py
+/backend/db_config.py
 .idea/
