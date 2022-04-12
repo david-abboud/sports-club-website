@@ -154,10 +154,6 @@ def extract_auth_token(authenticated_request):
     else:
       return None
 
-def decode_token(token):
-  payload = jwt.decode(token, SECRET_KEY, 'HS256')
-  return payload['sub']
-
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
     unm = request.json["user_name"]
@@ -175,6 +171,32 @@ def reset_password():
     query.hashed_password = bcrypt.generate_password_hash(new_pwd1)
     db.session.commit()
     return jsonify("Password has been changed")
+
+@app.route('/delete_customer', methods=['POST'])
+def delete_customer():
+    unm = request.json["user_name"]
+    pwd_unhashed = request.json["password"]
+    confirmation = request.json["confirmation"]
+
+    query = db.session.query(Customers).filter_by(user_name=unm).first()
+
+    if (query == None):
+        abort(403)
+
+    if (bcrypt.check_password_hash(query.hashed_password, pwd_unhashed) == False):
+        abort(403)
+
+    if (confirmation!=True):
+        abort(403)
+
+    db.session.query(Customers).filter_by(user_name=unm).delete()
+    db.session.commit()
+    return jsonify("Deletion successful")
+
+
+def decode_token(token):
+  payload = jwt.decode(token, SECRET_KEY, 'HS256')
+  return payload['sub']
 
 
 @app.route('/reservation', methods=['POST'])
