@@ -1,8 +1,9 @@
+/venv/
 /backend/venv/
+/full-stack/venv/
 db_config.py
 
 .DS_Store
-/backend/venv/.DS_Store
 /backend/app.pyc
 /backend/__pycache__/
 backend/db_config.py
