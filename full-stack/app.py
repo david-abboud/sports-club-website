@@ -99,6 +99,40 @@ class Events(db.Model):
  def __init__(self, type):
   super(Events, self).__init__(type=type)
 
+
+@app.route('/register')
+def register_page():
+  return render_template('Register.html')
+
+@app.route('/signin')
+def sign_in_page():
+  return render_template('Sign-In.html')
+
+@app.route('/home')
+def home_page():
+  return render_template('index.html')
+
+@app.route('/aboutus')
+def about_us_page():
+  return render_template('About-Us.html')
+
+@app.route('/reservations')
+def reservations_page():
+  return render_template('Reservations-.html')
+
+@app.route('/news')
+def news_page():
+  return render_template('News.html')
+
+@app.route('/membership')
+def membership_page():
+  return render_template('Membership.html')
+
+@app.route('/modify')
+def modify_page():
+  return render_template('Membership-(Members).html')
+
+
 @app.route('/customer', methods=['POST'])
 def create_user():
  unm = request.json["user_name"]
