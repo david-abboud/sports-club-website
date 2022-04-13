@@ -154,6 +154,10 @@ def extract_auth_token(authenticated_request):
     else:
       return None
 
+def decode_token(token):
+  payload = jwt.decode(token, SECRET_KEY, 'HS256')
+  return payload['sub']
+
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
     unm = request.json["user_name"]
@@ -171,6 +175,42 @@ def reset_password():
     query.hashed_password = bcrypt.generate_password_hash(new_pwd1)
     db.session.commit()
     return jsonify("Password has been changed")
+
+@app.route('/modify_customer', methods=['POST'])
+def modify_customer():
+    unm = request.json["user_name"]
+    pwd = request.json["password"]
+    type = request.json["type"]
+    mdf = request.json["modification"]
+
+    query = db.session.query(Customers).filter_by(user_name=unm).first()
+
+    if (unm == "" or pwd == ""):
+        abort(400)
+
+    query = db.session.query(Customers).filter_by(user_name=unm).first()
+
+    if (query == None):
+        abort(403)
+
+    if (bcrypt.check_password_hash(query.hashed_password, pwd) == False):
+        abort(403)
+
+    if (type=="user_name"):
+        query.user_name = mdf
+    elif (type=="first_name"):
+        query.first_mame = mdf
+    elif (type=="last_name"):
+        query.last_mame = mdf
+    elif (type=="email"):
+        query.email = mdf
+    elif (type=="phone_number"):
+        query.phone_number = mdf
+    else:
+        abort(403)
+
+    db.session.commit()
+    return jsonify("Modification Successful")
 
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
@@ -192,11 +232,6 @@ def delete_customer():
     db.session.query(Customers).filter_by(user_name=unm).delete()
     db.session.commit()
     return jsonify("Deletion successful")
-
-
-def decode_token(token):
-  payload = jwt.decode(token, SECRET_KEY, 'HS256')
-  return payload['sub']
 
 
 @app.route('/reservation', methods=['POST'])
