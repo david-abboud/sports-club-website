@@ -7,10 +7,13 @@
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>About Us</title>
-    <link rel="stylesheet" href="nicepage.css" media="screen">
-<link rel="stylesheet" href="About-Us.css" media="screen">
-    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <link rel="stylesheet" href= media="screen">
+    <link rel="stylesheet" href="{{ url_for('static',filename='nicepage.css')  }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static',filename='News.css')  }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static',filename='About-Us.css')  }}" media="screen">
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='jquery.js')}}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='script.js')}}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='nicepage.js')}}" defer=""></script>
     <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     
@@ -26,7 +29,7 @@
     <meta property="og:description" content="">
     <meta property="og:type" content="website">
   </head>
-  <body class="u-body u-xl-mode"><header class="u-align-center-sm u-align-center-xs u-clearfix u-custom-color-2 u-header u-header" id="sec-8849"><img class="u-image u-image-default u-image-1" src="images/Logo.png" alt="" data-image-width="1344" data-image-height="1208"><nav class="u-align-left u-menu u-menu-dropdown u-offcanvas u-menu-1">
+  <body class="u-body u-xl-mode"><header class="u-align-center-sm u-align-center-xs u-clearfix u-custom-color-2 u-header u-header" id="sec-8849"><img class="u-image u-image-default u-image-1" src="{{url_for('static', filename='images/Logo.png')}}" alt="" data-image-width="1344" data-image-height="1208"><nav class="u-align-left u-menu u-menu-dropdown u-offcanvas u-menu-1">
         <div class="menu-collapse" style="font-size: 1rem;">
           <a class="u-button-style u-nav-link" href="#">
             <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-8a8f"></use></svg>
@@ -35,32 +38,32 @@
           </a>
         </div>
         <div class="u-custom-menu u-nav-container">
-          <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html" style="padding: 64px 20px;">Home</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="About-Us.html" style="padding: 64px 20px;">About Us</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Membership.html" style="padding: 64px 20px;">Membership</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Reservations-.html" style="padding: 64px 20px;">Reservations </a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="News.html" style="padding: 64px 20px;">News</a>
+        <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home" style="padding: 64px 20px;">Home</a>
+          </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus" style="padding: 64px 20px;">About Us</a>
+          </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="membership" style="padding: 64px 20px;">Membership</a>
+          </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations" style="padding: 64px 20px;">Reservations </a>
+          </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news" style="padding: 64px 20px;">News</a>
 </li></ul>
         </div>
         <div class="u-custom-menu u-nav-container-collapse">
           <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
             <div class="u-inner-container-layout u-sidenav-overflow">
               <div class="u-menu-close"></div>
-              <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html">Home</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="About-Us.html">About Us</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Membership.html">Membership</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Reservations-.html">Reservations </a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="News.html">News</a>
+              <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home">Home</a>
+              </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus">About Us</a>
+              </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="membership">Membership</a>
+              </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations">Reservations </a>
+              </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news">News</a>
 </li></ul>
             </div>
           </div>
           <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
         </div>
-      </nav><a href="Sign-In.html" data-page-id="32440470" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-1">Sign In</a><a href="Register.html" data-page-id="58374739" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-2">Register</a></header>
+      </nav><a href="signin" data-page-id="32440470" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-1">Sign In</a><a href="register" data-page-id="58374739" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-2">Register</a></header>
     <section class="u-clearfix u-section-1" id="sec-986c">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <img class="u-expanded-width u-image u-image-default u-image-1" src="images/Stonehill_hero_resized_2-1800x692.jpeg" alt="" data-image-width="1800" data-image-height="692">
-        <h4 class="u-align-center u-text u-text-1"><i>Are you an aspiring athlete? Do you
+        <img class="u-expanded-width u-image u-image-default u-image-1" src="{{url_for('static', filename='images/Stonehill_hero_resized_2-1800x692.jpeg')}}" data-image-width="1800" data-image-height="692">
+        <h4 class="u-align-center u-textZ u-text-1"><i>Are you an aspiring athlete? Do you
 dream of making it to the Olympics? Or do you just want to lose some weight and
 blow some steam off after a tough day at work? Maybe you just want to help your
 kids pursue their dreams (or get some quiet time: don’t worry, we understand ).</i><i>&nbsp;</i>

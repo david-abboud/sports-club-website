@@ -168,7 +168,9 @@ def auth():
     abort(403)
 
   tok = create_token(query.id)
-  return jsonify(token=tok)
+  resp = jsonify(token=tok)
+  resp.status_code = 200
+  return resp
 
 def create_token(user_id):
     payload = {
@@ -230,18 +232,17 @@ def modify_customer():
     if (bcrypt.check_password_hash(query.hashed_password, pwd) == False):
         abort(403)
 
-    if (type=="user_name"):
+    if (type=="username"):
         query.user_name = mdf
     elif (type=="first_name"):
-        query.first_mame = mdf
+        query.first_name = mdf
     elif (type=="last_name"):
-        query.last_mame = mdf
+        query.last_name = mdf
     elif (type=="email"):
         query.email = mdf
     elif (type=="phone_number"):
         query.phone_number = mdf
-    else:
-        abort(403)
+
 
     db.session.commit()
     return jsonify("Modification Successful")

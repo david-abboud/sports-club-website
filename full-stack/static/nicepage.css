@@ -15317,7 +15317,7 @@ div.u-video,
 }
 .u-nav-item a.u-nav-link,
 .menu-collapse a.u-nav-link {
-  color: inherit;
+  background-color: inherit;
 }
 .u-nav-container > .u-nav > .u-nav-item > .u-nav-link {
   padding: 10px 20px;

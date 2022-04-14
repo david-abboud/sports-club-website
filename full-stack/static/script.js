@@ -1,6 +1,6 @@
 window.onload=function(){
     var reg_button = document.getElementById("register_button");
-    reg_button.addEventListener("click", reg_func);
+    reg_button.addEventListener("click", reg_func);    
 }
 
 var SERVER_URL = "http://127.0.0.1:5000"
@@ -39,3 +39,7 @@ function reg_func() {
             });
     }
 }
+
+
+
+

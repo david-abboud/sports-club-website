@@ -7,10 +7,13 @@
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>Sign In</title>
-    <link rel="stylesheet" href="nicepage.css" media="screen">
-<link rel="stylesheet" href="Sign-In.css" media="screen">
-    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='Sign-In.css')  }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static',filename='nicepage.css')  }}" media="screen">
+
+  <script class="u-script" type="text/javascript" src="{{url_for('static', filename='signin.js')}}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='jquery.js')}}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='nicepage.js')}}" defer=""></script>
+   
     <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     
@@ -30,26 +33,26 @@
     <section class="u-clearfix u-section-1" id="sec-d51b">
       <div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-form u-form-1">
-          <form action="#" method="POST" class="u-clearfix u-form-custom-backend u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="Sign In" style="padding: 10px;" redirect="true">
+          <li class="u-nav-item"><a class="u-button-style u-nav-link " href="home" style="padding: 64px 20px;">Home</a>
+          <form class="u-clearfix u-form-custom-backend u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="Sign In" style="padding: 10px;">
             <div class="u-form-group u-form-name">
               <label for="username" class="u-label">Username</label>
-              <input type="text" id="username" name="username" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+              <input type="text" id="username_login" name="username" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
             </div>
             <div class="u-form-email u-form-group">
               <label for="email" class="u-label">Password</label>
-              <input type="email" id="email" name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+              <input type="password" id="password_login" name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
             </div>
             <div class="u-align-center u-form-group u-form-submit">
-              <a href="#" class="u-btn u-btn-submit u-button-style">Submit</a>
-              <input type="submit" value="submit" class="u-form-control-hidden">
+              <button class="u-btn u-btn-submit u-button-style" type="button" id="login_button">Signin</button>
             </div>
             <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
             <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div>
-            <input type="hidden" value="" name="recaptchaResponse">
+  
           </form>
         </div>
         <a href="https://nicepage.site" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-btn u-button-style u-none u-text-palette-1-base u-btn-2">Forgot Password? Reset here</a>
-        <a href="Register.html" data-page-id="58374739" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-btn u-button-style u-none u-text-palette-1-base u-btn-3">Don't have an account? Register here!</a>
+        <a href="register" data-page-id="58374739" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-btn u-button-style u-none u-text-palette-1-base u-btn-3">Don't have an account? Register here!</a>
       </div>
     </section>
     
