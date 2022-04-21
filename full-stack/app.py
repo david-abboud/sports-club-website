@@ -24,10 +24,6 @@ bcrypt = Bcrypt(app)
 
 CORS(app)
 
-@app.route('/hello')
-def hello_world():
-  return render_template('register.html')
-
 if __name__ == '__main__':
    app.run()
 
@@ -74,15 +70,17 @@ class Reservations(db.Model):
  user_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True) #user id null if event
  field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=True)
  event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=True)
+ reservation_time = db.Column(db.String(32))
 
- def __init__(self, type, field_id, event_id, user_id):
-  super(Reservations, self).__init__(date=datetime.datetime.now(), type=type, field_id=field_id, event_id=event_id, user_id=user_id)
+ def __init__(self, type, field_id, event_id, reservation_time, user_id):
+  super(Reservations, self).__init__(date=datetime.datetime.now(), type=type, field_id=field_id, event_id=event_id, reservation_time=reservation_time, user_id=user_id)
 
 class ReservationSchema(ma.Schema):
     class Meta:
-        fields = ("id", "date", "type", "user_id", "field_id", "event_id")
+        fields = ("id", "date", "type", "user_id", "field_id", "reservation_time", "event_id")
         model = Reservations
-reservations_schema = ReservationSchema()
+reservation_schema = ReservationSchema()
+reservations_schema = ReservationSchema(many=True)
 
 class Fields(db.Model):
  id = db.Column(db.Integer, primary_key=True)
@@ -95,10 +93,10 @@ class Events(db.Model):
  id = db.Column(db.Integer, primary_key=True)
  date = db.Column(db.DateTime)
  reservation_id = db.Column(db.Integer, db.ForeignKey('reservations.id'), nullable=True)
+ seats_left = db.Column(db.Integer)
 
- def __init__(self, type):
-  super(Events, self).__init__(type=type)
-
+ def __init__(self, date, seats_left):
+  super(Events, self).__init__(date=date, seats_left=seats_left)
 
 @app.route('/register')
 def register_page():
@@ -131,6 +129,26 @@ def membership_page():
 @app.route('/modify')
 def modify_page():
   return render_template('Membership-(Members).html')
+
+@app.route('/aboutus_si')
+def aboutus_si_page():
+  return render_template('About-Us_signedin.html')
+
+@app.route('/home_si')
+def home_si_page():
+  return render_template('Index_signedin.html')
+
+@app.route('/modify_si')
+def modify_si_page():
+  return render_template('Membership-(Members)_signedin.html')
+
+@app.route('/reservations_si')
+def reservations_si_page():
+  return render_template('Reservations_signedin.html')
+
+@app.route('/news_si')
+def news_si_page():
+  return render_template('News_signedin.html')
 
 
 @app.route('/customer', methods=['POST'])
@@ -193,6 +211,8 @@ def extract_auth_token(authenticated_request):
 def decode_token(token):
   payload = jwt.decode(token, SECRET_KEY, 'HS256')
   return payload['sub']
+
+
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
@@ -274,11 +294,12 @@ def create_reservation():
   type = request.json["type"]
   field_id = request.json["field_id"]
   event_id = request.json["event_id"]
+  reservation_time = request.json["reservation_time"]
 
-  reservation = Reservations(type, field_id, event_id, None)
+  reservation = Reservations(type, field_id, event_id, reservation_time, None)
   
   token = extract_auth_token(request)
-  # def __init__(self, type, field_id, event_id, user_id):
+  # def __init__(self, type, field_id, event_id, reservation_time, user_id):
 
   if (token != None):
     try:
@@ -288,8 +309,31 @@ def create_reservation():
     except jwt.InvalidTokenError as error:
         abort(403)
     reservation.user_id = userid
-    
+
+  print(reservation_time) #2022-04-21T21:50
+  
+  if (event_id != None):
+    query = db.session.query(Events).filter_by(id=event_id).first()
+    query.seats_left -= 1
+    reservation.reservation_time = query.date
+
   db.session.add(reservation)
   db.session.commit()
  
-  return jsonify(reservations_schema.dump(reservation))
+  return jsonify(reservation_schema.dump(reservation))
+
+@app.route('/reservation', methods=['GET'])
+def fetch_reservations():
+  token = extract_auth_token(request)
+
+  if (token != None):
+    try:
+        userid = decode_token(token)
+    except jwt.ExpiredSignatureError as error:
+        abort(403)
+    except jwt.InvalidTokenError as error:
+        abort(403)
+
+  query = db.session.query(Reservations).filter_by(user_id=userid).all()
+  print(query)
+  return jsonify(reservations_schema.dump(query))

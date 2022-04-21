@@ -24,11 +24,18 @@ async function log_func(username, password) {
             },
             body: JSON.stringify(data),
         })
-        console.log('status code: ', response.status); // 👉️ 200
-
-    if (response.ok) {
+        .then((response) => response.json())
+        .then((body) => {
+            console.log("TOKEN:");
+            console.log(body.token);
+            saveUserToken(body.token);
+            token1 = body.token;
+        });
+// 👉️ 200
+    if (token1 != "") {
       console.log(response);
-      window.open("http://127.0.0.1:5000/home","_self")
+
+      window.open("http://127.0.0.1:5000/home_si","_self")
     }
 
     //     .then((response) => {
@@ -48,6 +55,14 @@ async function log_func(username, password) {
         // });
         
 }
-    
 
+ function saveUserToken(userToken) {
+    localStorage.setItem("TOKEN", userToken);
+  }
+   function getUserToken() {
+    return localStorage.getItem("TOKEN");
+  }
+   function clearUserToken() {
+    return localStorage.removeItem("TOKEN");
+  }
 

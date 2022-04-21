@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='About-Us.css')  }}" media="screen">
     <link rel="stylesheet" href="{{ url_for('static',filename='Reservations-.css')  }}" media="screen">
     <script class="u-script" type="text/javascript" src="{{url_for('static', filename='jquery.js')}}" defer=""></script>
-    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='script.js')}}" defer=""></script>
     <script class="u-script" type="text/javascript" src="{{url_for('static', filename='nicepage.js')}}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{{url_for('static', filename='reservation.js')}}" defer=""></script>
     <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     
@@ -27,7 +27,7 @@
 
 </script>
     <meta name="theme-color" content="#478ac9">
-    <meta property="og:title" content="Reservations">
+    <meta property="og:title" content="Reservations_si">
     <meta property="og:description" content="">
     <meta property="og:type" content="website">
   </head>
@@ -40,31 +40,56 @@
           </a>
         </div>
         <div class="u-custom-menu u-nav-container">
-          <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home" style="padding: 64px 20px;">Home</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus" style="padding: 64px 20px;">About Us</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="membership" style="padding: 64px 20px;">Membership</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations" style="padding: 64px 20px;">Reservations </a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news" style="padding: 64px 20px;">News</a>
+          <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home_si" style="padding: 64px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus_si" style="padding: 64px 20px;">About Us</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations_si" style="padding: 64px 20px;">Reservations </a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news_si" style="padding: 64px 20px;">News</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="modify_si">Modify</a>
 </li></ul>
         </div>
         <div class="u-custom-menu u-nav-container-collapse">
           <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
             <div class="u-inner-container-layout u-sidenav-overflow">
               <div class="u-menu-close"></div>
-              <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home">Home</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus">About Us</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="membership">Membership</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations">Reservations </a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news">News</a>
+              <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="home_si">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="aboutus_si">About Us</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="reservations_si">Reservations </a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="news_si">News</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="modify_si">Modify</a>
 </li></ul>
             </div>
           </div>
           <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
         </div>
-      </nav><a href="signin" data-page-id="32440470" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-1">Sign In</a><a href="register" data-page-id="58374739" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-2">Register</a></header> 
+      </nav><a href="home" data-page-id="32440470" class="u-border-none u-btn u-button-style u-custom-color-3 u-btn-1">Log out</a></header> 
     <section class="u-clearfix u-section-2" id="sec-1da8">
-        <h4 class="u-align-center u-textZ u-text-1"><i>You need to be signed in in order to see your reservations</h4>
+        <h4 class="u-align-center u-textZ u-text-1"><i>Reserve a Field</h4>
+            <select name="field" id="field_select">
+                <option value="">--Fields--</option>
+                <option value="basketball">Basketball</option>
+                <option value="tennis">Tennis</option>
+                <option value="boxing">Boxing</option>
+                <option value="volleyball">Volley Ball</option>
+                <option value="football">Football</option>
+            </select>
+                <br>
+                <h4>Date and time:
+                  <input type="datetime-local" id="Test_DatetimeLocal">
+                </h4>
+                <button class="u-border-none u-btn u-btn-submit u-button-style u-custom-color-2 u-btn-2" type="button" id="field_button">Book!</button>
         </section>
+        <section class="u-clearfix u-section-2" id="sec-1da8">
+            <h4 class="u-align-center u-textZ u-text-1"><i>Reserve for an event</h4>
+                <select name="event" id="event_select">
+                    <option value="">--Events--</option>
+                    <option value="By the pool with sax">By the pool with sax</option>
+                    <option value="Mega vs speed (Football game)">Mega vs speed (Football game)</option>
+                    <option value="Basketball workshop">Basketball workshop</option>
+                    <option value="Zinedine zidane freestyle show">Zinedine zidane freestyle show</option>
+                    <option value="Mohammad Ali vs David Abboud (boxing match)">Mohammad Ali vs David Abboud (boxing match)</option>
+                </select>
+         </section>
+         <button class="u-border-none u-btn u-btn-submit u-button-style u-custom-color-2 u-btn-2" type="button" id="event_button">Book!</button>
 
 
     
