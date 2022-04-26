@@ -1,14 +1,22 @@
 from argparse import RawDescriptionHelpFormatter
+from dataclasses import field
 import datetime
+import json
+import os
+import pwd
+from time import sleep
+import webbrowser
 from flask_bcrypt import Bcrypt
-from flask import Flask, abort, jsonify, request
+from flask import Flask, abort, jsonify, redirect, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-import jwt
 import jwt
 from db_config import DB_CONFIG
 from flask_marshmallow import Marshmallow
 from flask import render_template
+from flask import Flask, request, url_for
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 SECRET_KEY = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
 
@@ -27,6 +35,16 @@ CORS(app)
 if __name__ == '__main__':
    app.run()
 
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'sportsys.430@gmail.com'
+app.config['MAIL_PASSWORD'] = '430group_2'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+s = URLSafeTimedSerializer('Thisisasecret!')
+
+dict = {}
 
 class Customers(db.Model):
  id = db.Column(db.Integer, primary_key=True)
@@ -150,6 +168,22 @@ def reservations_si_page():
 def news_si_page():
   return render_template('News_signedin.html')
 
+@app.route('/showroom')
+def showroom_page():
+  return render_template('Showroom.html')
+
+@app.route('/showroom_si')
+def showroom_si_page():
+  return render_template('Showroom_signedin.html')
+
+@app.route('/confirmation')
+def confirm():
+  return render_template('confirmation.html')
+
+@app.route('/table2')
+def table2():
+  sleep(1)
+  return render_template('webbrowser.html')
 
 @app.route('/customer', methods=['POST'])
 def create_user():
@@ -159,14 +193,43 @@ def create_user():
  last_name = request.json["last_name"]
  email = request.json["email"]
  phone_number = request.json["phone_number"]
- is_member = False
+
+ token = s.dumps(email, salt='email-confirm')
+ msg = Message('Confirm Email', sender='sportsys.430@gmail.com', recipients=[email])
+ link = url_for('confirm_email', token=token, _external=True)
+ msg.body = 'Your link is {}'.format(link)
+ mail.send(msg)
+
+ dict[token] = False
+
+ helper(token, unm, pwd_unhashed, first_name, last_name, email, phone_number)
 
  customer = Customers(unm, pwd_unhashed, first_name, last_name, email, phone_number)
 
- db.session.add(customer)
- db.session.commit()
- 
  return jsonify(customers_schema.dump(customer))
+
+
+
+def helper(token, unm, pwd_unhashed, first_name, last_name, email, phone_number):
+  while (dict[token] != True):
+   None
+
+  customer = Customers(unm, pwd_unhashed, first_name, last_name, email, phone_number)
+  db.session.add(customer)
+  db.session.commit()
+  return jsonify(customers_schema.dump(customer))
+
+
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = s.loads(token, salt='email-confirm', max_age=3600)
+    except SignatureExpired:
+        return '<h1>The token is expired!</h1>'
+    
+    dict[token] = True
+    return '<h1>Account confirmed</h1>'
  
 
 @app.route('/signin', methods=['POST'])
@@ -281,7 +344,7 @@ def delete_customer():
     if (bcrypt.check_password_hash(query.hashed_password, pwd_unhashed) == False):
         abort(403)
 
-    if (confirmation!=True):
+    if (confirmation != pwd_unhashed):
         abort(403)
 
     db.session.query(Customers).filter_by(user_name=unm).delete()
@@ -299,7 +362,7 @@ def create_reservation():
   reservation = Reservations(type, field_id, event_id, reservation_time, None)
   
   token = extract_auth_token(request)
-  # def __init__(self, type, field_id, event_id, reservation_time, user_id):
+
 
   if (token != None):
     try:
@@ -310,10 +373,15 @@ def create_reservation():
         abort(403)
     reservation.user_id = userid
 
-  print(reservation_time) #2022-04-21T21:50
+  query = db.session.query(Reservations).filter_by(reservation_time = reservation_time, field_id = field_id).first()
+  print(query)
+  if (query != None):
+    abort(403)
   
   if (event_id != None):
     query = db.session.query(Events).filter_by(id=event_id).first()
+    if (query.seats_left == 0):
+      abort(403)
     query.seats_left -= 1
     reservation.reservation_time = query.date
 
@@ -322,18 +390,66 @@ def create_reservation():
  
   return jsonify(reservation_schema.dump(reservation))
 
-@app.route('/reservation', methods=['GET'])
-def fetch_reservations():
+
+
+@app.route('/getUserInfo', methods=['GET'])
+def getUserInfo():
+    token = extract_auth_token(request)
+    userid = decode_token(token)
+    query = db.session.query(Customers).filter_by(id=userid).first()
+    return jsonify(customers_schema.dump(query))
+
+@app.route('/table', methods=['GET'])
+def table():
   token = extract_auth_token(request)
+  userid = decode_token(token)
+  result = db.session.query(Reservations).filter_by(user_id=userid).all()
+  print("_----------")
+  print (result)
+  
+  p = []
 
-  if (token != None):
-    try:
-        userid = decode_token(token)
-    except jwt.ExpiredSignatureError as error:
-        abort(403)
-    except jwt.InvalidTokenError as error:
-        abort(403)
+  result = reservations_schema.dump(result)
 
-  query = db.session.query(Reservations).filter_by(user_id=userid).all()
-  print(query)
-  return jsonify(reservations_schema.dump(query))
+  print (result)
+
+  tbl = "<tr><td>Reservation-Time</td><td>Field</td><td>Event</td></tr>"
+  p.append(tbl)
+
+  for row in result:
+      a = "<tr><td>%s</td>"%row['reservation_time']
+      print("----------------------------------")
+      print(a)
+      p.append(a)
+      b = "<td>%s</td>"%row['field_id']
+      p.append(b)
+      c = "<td>%s</td>"%row['event_id']
+      p.append(c)
+
+
+  contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+  <html>
+  <head>
+  <meta content="text/html; charset=ISO-8859-1"
+  http-equiv="content-type">
+  <title>Python Webbrowser</title>
+  </head>
+  <body>
+  <table>
+  %s
+  </table>
+  </body>
+  </html>
+  '''%(p)
+
+  dirname = os.path.dirname(__file__)
+  filename = os.path.join(dirname, 'templates/webbrowser.html')
+
+  output = open(filename,"w")
+  output.write(contents)
+  output.close()    
+
+
+  return jsonify(filename)
+
+ 

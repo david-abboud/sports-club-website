@@ -3,12 +3,65 @@ window.onload=function(){
     var mod_button = document.getElementById("modify_button");
     mod_button.addEventListener("click", mod_func);
 
+    var del_button = document.getElementById("delete_button");
+    del_button.addEventListener("click", del_func);
 
-    console.log("log button", mod_button)
-    
+    getUserInfo();
 }
 
 var SERVER_URL = "http://127.0.0.1:5000"
+
+async function del_func(){
+    var username = document.getElementById("username").value;  
+    var password = document.getElementById("password").value;
+    var confirmation = document.getElementById("newpassword").value;
+
+        const data = {  "user_name":username,
+                        "password":password,
+                        "confirmation":confirmation,
+                       
+                        };
+                        console.log("log2")
+
+        const response = await fetch(`${SERVER_URL}/delete_customer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+    })
+    if (response.ok) {
+        console.log(response);
+        console.log("User deleted successfully", data);
+        window.open("http://127.0.0.1:5000/home","_self")
+    }
+    else {
+        console.log("error");
+    }
+
+}
+
+async function getUserInfo(){
+    userToken = getUserToken();
+
+    console.log("log token", userToken)
+
+    const response = await fetch(`${SERVER_URL}/getUserInfo`, {
+        method: 'Get',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userToken}`
+        },
+    })
+    const data = await response.json();
+
+    document.getElementById("username_display").innerHTML = data.user_name;
+    document.getElementById("firstname_display").innerHTML = data.first_name;
+            document.getElementById("lastname_display").innerHTML =data.last_name ;
+            document.getElementById("email_display").innerHTML =data.email ;
+            document.getElementById("phone_display").innerHTML = data.phone_number;
+    
+}
 
 function mod_func() {
     console.log("log0")
@@ -45,5 +98,9 @@ function mod_func() {
         console.log("log4")
         
 }
+
+function getUserToken() {
+    return localStorage.getItem("TOKEN");
+  }
 
 

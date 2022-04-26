@@ -1,3 +1,5 @@
+
+
 window.onload = function () {
     console.log("script loaded")
     var fi_button = document.getElementById("field_button");
@@ -5,6 +7,37 @@ window.onload = function () {
 
     var ev_button = document.getElementById("event_button");
     ev_button.addEventListener("click", ev_func);
+
+    var tb_button = document.getElementById("table_button");
+    tb_button.addEventListener("click", tb_func)
+        
+}
+
+async function tb_func(){
+    userToken = getUserToken();
+
+    const response = await fetch(`${SERVER_URL}/table`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userToken}`
+        },
+    })
+    if (response.ok){
+        window.open("http://127.0.0.1:5000/table2","_self")
+    }
+   
+}
+
+async function fetch_reservations(){
+    userToken = getUserToken();
+    const response = await fetch(`${SERVER_URL}/reservation`, {
+        headers: {
+            Authorization: `bearer ${userToken}`,
+        },
+    });
+    let table_data = await response.text();
+    console.log(table_data);
 }
 
 var SERVER_URL = "http://127.0.0.1:5000"
@@ -60,6 +93,12 @@ async function fi_func() {
         if (response.ok) {
             console.log(response);
             window.alert("Field Booked.");
+            return;
+        }
+
+        else{
+            window.alert("Field is already booked.");
+            return;
         }
     }
 
