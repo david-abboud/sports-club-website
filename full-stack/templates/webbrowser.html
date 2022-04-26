@@ -1,14 +1,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
   <html>
   <head>
+  <script>
+    window.onload=function(){
+    console.log("script loaded")
+    var mod_button = document.getElementById("delete_id_button");
+    mod_button.addEventListener("click", del_res_func);
+}
+
+var SERVER_URL = "http://127.0.0.1:5000"
+
+async function del_res_func(){
+    console.log("Func");
+    var id = document.getElementById("reservation_id").value;
+
+        const data = {  "id":id,
+                        };
+                        
+
+        const response = await fetch(`${SERVER_URL}/delete_reservation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+    })
+    if (response.ok) {
+        window.alert("Reservation cancelled.");
+        window.open("http://127.0.0.1:5000/reservations_si","_self");
+    }
+    else {
+        console.log("error");
+    }
+
+}
+  </script>
   <meta content="text/html; charset=ISO-8859-1"
   http-equiv="content-type">
-  <title>Python Webbrowser</title>
+  <title>Your Reservations</title>
   </head>
   <body>
   <table>
-  ['<tr><td>Reservation-Time</td><td>Field</td><td>Event</td></tr>', '<tr><td>2022-04-23T18:00:00.000Z</td>', '<td>2</td>', '<td>None</td>', '<tr><td>2022-05-09 18:00:00</td>', '<td>None</td>', '<td>3</td>']
+  ['<tr><td>Reservation-Time</td><td>Field</td><td>Event</td><td>Reservation-ID</td></tr>', '<tr><td>2022-04-23T19:00:00.000Z</td>', '<td>Boxing</td>', '<td></td>', '<td>28</td>', '<tr><td>2022-04-23T20:00:00.000Z</td>', '<td>Boxing</td>', '<td></td>', '<td>29</td>', '<tr><td>2022-04-21T21:30</td>', '<td>Football</td>', '<td></td>', '<td>55</td>', '<tr><td>2022-04-28 20:00:00</td>', '<td></td>', '<td>By the pool with Sax</td>', '<td>60</td>', '<tr><td>2022-05-01 18:00:00</td>', '<td></td>', '<td>Basketball workshop</td>', '<td>61</td>', '<tr><td>2022-04-21T21:48</td>', '<td>Basketball</td>', '<td></td>', '<td>63</td>', '<tr><td>2022-04-21T21:50</td>', '<td>Boxing</td>', '<td></td>', '<td>64</td>', '<tr><td>2022-04-23T18:44</td>', '<td>Tennis</td>', '<td></td>', '<td>65</td>', '<tr><td>2022-04-23T18:44</td>', '<td>Volleyball</td>', '<td></td>', '<td>66</td>', '<tr><td>2022-04-23T07:43</td>', '<td>Boxing</td>', '<td></td>', '<td>67</td>', '<tr><td>2022-01-02T01:00</td>', '<td>Tennis</td>', '<td></td>', '<td>70</td>', '<tr><td>2022-03-04T13:00</td>', '<td>Tennis</td>', '<td></td>', '<td>71</td>', '<tr><td>2022-04-12T13:00</td>', '<td>Tennis</td>', '<td></td>', '<td>72</td>', '<tr><td>2022-04-12T13:00</td>', '<td>Boxing</td>', '<td></td>', '<td>73</td>', '<tr><td>2022-02-02T01:00</td>', '<td>Basketball</td>', '<td></td>', '<td>75</td>', '<tr><td>2022-04-29 18:00:00</td>', '<td></td>', '<td>Mega vs speed (Football game)</td>', '<td>76</td>', '<tr><td>2022-02-03T10:00</td>', '<td>Boxing</td>', '<td></td>', '<td>77</td>']
   </table>
   </body>
+  <center><input type="number" pattern="\+?\d{0,3}[\s\(\-]?([0-9]{2,3})[\s\)\-]?([\s\-]?)([0-9]{3})[\s\-]?([0-9]{2})[\s\-]?([0-9]{2})" placeholder="Reservation ID" id="reservation_id" name="reservation" required=""></center>
+  <center><button type="button" id="delete_id_button">Cancel Reservation</button></center>
   </html>
   
