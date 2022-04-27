@@ -1,0 +1,100 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Bold;\f1\fnil\fcharset0 HelveticaNeue;\f2\fswiss\fcharset0 ArialMT;
+\f3\fswiss\fcharset0 Arial-BoldMT;\f4\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red24\green24\blue23;\red255\green255\blue255;\red24\green25\blue27;
+}
+{\*\expandedcolortbl;;\cssrgb\c12549\c12157\c11765;\cssrgb\c100000\c100000\c100000;\cssrgb\c12549\c12941\c14118;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh16320\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\ul \ulc2 Platform used :
+\f1\b0 \ulnone \
+\'97 Backend server and language : Flask and python\
+\
+\'97 Frontend development : Nicepage and then edited manually. HTML, CSS and 
+\f2 \cf4 JavaScript.\
+\
+
+\f1 \cf2 \'97 Note that all packages can be found in the requirements.txt file.\
+\
+\'97 Virtual environment : Python virtual environment\
+\
+\'97 No frameworks were used (such as bootstrap or tailwind). Only basic HTML, CSS, and 
+\f2 \cf4 JavaScript.\
+\
+\'97 Google calendar was integrated in our website to display the events that are happening using a simple line code taken from https://calendar.google.com/calendar/u/0/r.\
+\
+\'97 Same for google maps using a link to display the location of the club.\
+\
+\'97 Database : For our website to be fully functional, MySql database should be used using MySql workbench. A file in the pro
+\fs32 j
+\fs30 ect should be created called db_config.py is available which has all the information about the database : The format is the following: DB_CONFIG = 'mysql+pymysql://USERNAME:PASSWORD@URL:PORT/DATABASE NAME\'92.  Example: \cf4 \'93DB_CONFIG = 'mysql+pymysql://root:rootroot@127.0.0.1:3306/sportsys\'92\'94 : \cf4 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf4 \ul Steps to run the full website on your machine :\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0 \cf4 \ulnone 1- Install my Sql workbench and community server on your machine.\
+\
+2- Create a schema called sportsys.\
+\
+3- Edit the db_config.py file to match your database.\
+\
+4- Open the terminal in app.py and then run a python shell on the terminal outside of the virtual environment.\
+\
+5- Run the following commands in order : from app import db\
+							      db.create_all()\
+							      exit()\
+\
+6.a- You should be able to see in MySQLWorkbench the different tables and columns.\
+\
+6.b- In MySQLWorkbench go to Server > Data import > import from self contained file + default target schema = sportsys\
+\
+7- Using the same terminal, install the virtual environment using : 
+\f4 \cf0 \cb1 py -3 -m venv venv\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs30 \cf4 \cb3 8- Run your virtual environment using :  
+\f4 \cf0 \cb1 venv\\Scripts\\activate\
+\
+
+\f2 \cf4 \cb3 9- In the Venv, install the requirements.txt file using pip install -r requirement.txt\
+	/!\\ In case this does not work, troubleshoot it by installing all dependencies manually.\
+\
+10- Still in the Venv, run flask using : Flask run. Your server should be running.\
+\
+11- On chrome, paste the following link : http://127.0.0.1:5000/home\
+\
+12- You should be able to use the website.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Notes and more help :\
+\
+\'97 You can find all the HTML files in the folder called template,  and all the images, CSS and JavaScript files in the file called static \
+\
+\'97 To have a clear view of the frontend work, the website should be opened on chrome and in full screen. It is preferable to not have the console open to be able to view the full functionalities of the website.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\
+\
+\
+\
+_________________________If you have any problems running the website, please contact Ryan : rie21@mail.aub.edu 76307885 or David : daa63@mail.aub.edu 71779051________________________________\
+\
+\
+\
+\
+\
+\
+
+\f1 \cf2 \
+}

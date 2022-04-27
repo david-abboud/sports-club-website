@@ -1,13 +1,7 @@
-from argparse import RawDescriptionHelpFormatter
-from dataclasses import field
 import datetime
-import json
 import os
-import pwd
-from time import sleep
-import webbrowser
 from flask_bcrypt import Bcrypt
-from flask import Flask, abort, jsonify, redirect, request
+from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import jwt
