@@ -69,6 +69,32 @@ function mod_func() {
     var password = document.getElementById("password").value;
     var type = document.getElementById("select").value;
     var mdf = document.getElementById("modify").value;
+    var confirmation = document.getElementById("newpassword").value;
+
+    if (confirmation != ""){
+        if (password == confirmation){
+            const data2 = {  "user_name":username,
+                            "old_password":password,
+                            "new_password1":mdf,
+                            "new_password2":mdf,
+                            };
+                            console.log("log2")
+
+            var response2 = fetch(`${SERVER_URL}/reset_password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data2),
+            })
+ 
+        }
+
+            window.open("http://127.0.0.1:5000/signin","_self");
+        
+        
+        return;
+    }
 
     console.log("log1")
 
@@ -86,15 +112,8 @@ function mod_func() {
             },
             body: JSON.stringify(data),
         })
-        console.log("log3")
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        console.log("log3");
+        window.open("http://127.0.0.1:5000/modify_si","_self");
         console.log("log4")
         
 }

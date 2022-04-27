@@ -636,3 +636,4 @@ def delete_reservation():
     db.session.commit()
     return jsonify("Deletion successful")
     
+    
